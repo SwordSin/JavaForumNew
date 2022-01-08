@@ -3,6 +3,8 @@ package com.forum.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.forum.common.PropertiesList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +18,8 @@ import java.util.List;
 
 @Configuration
 public class MyFastJsonConfig {
-    @Value("${my-meta-data.time-type}")
-    private String timeFormatter;
+    @Autowired
+    private PropertiesList propertiesList;
 
     @Bean
     public HttpMessageConverters fastJsonMessageConverters() {
@@ -28,7 +30,7 @@ public class MyFastJsonConfig {
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
         //全局时间配置
-        fastJsonConfig.setDateFormat(timeFormatter);
+        fastJsonConfig.setDateFormat(propertiesList.getTimeType());
         fastJsonConfig.setCharset(Charset.forName("UTF-8"));
 
 //        处理中文乱码问题

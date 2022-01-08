@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * validation 统一异常处理
+     * validation 参数校验异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -47,5 +47,14 @@ public class GlobalExceptionHandler {
         // 删除最后一个字符
         msg.deleteCharAt(msg.length()-1);
         return ErrorResult.fail(200012, msg.toString());
+    }
+
+    /**
+     * Assert 异常处理
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResult handlerAccessException(IllegalArgumentException e, HttpServletRequest request) {
+        log.error("参数校验发生异常, {}", e.getMessage());
+        return ErrorResult.fail(200012, e.getMessage());
     }
 }

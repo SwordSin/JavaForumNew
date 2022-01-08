@@ -1,11 +1,10 @@
 package com.forum.vo;
 
-import com.forum.common.FieldMatch;
+import com.forum.common.custom.anno.FieldMatch;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @FieldMatch(first = "password", second = "againPassword", message = "输入的两次密码必须相同")

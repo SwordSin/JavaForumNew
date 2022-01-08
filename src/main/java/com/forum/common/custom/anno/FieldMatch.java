@@ -1,4 +1,4 @@
-package com.forum.common;
+package com.forum.common.custom.anno;
 
 
 import javax.validation.Constraint;

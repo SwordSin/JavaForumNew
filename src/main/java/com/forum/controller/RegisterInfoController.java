@@ -1,9 +1,12 @@
 package com.forum.controller;
 
 import com.forum.common.BusisnessException;
+import com.forum.common.PropertiesList;
+import com.forum.common.UtilsMethod;
 import com.forum.entity.RegisterInfoPojo;
 import com.forum.service.impl.RegisterInfoServiceImpl;
 import com.forum.vo.RegisterInfoVo;
+import com.forum.vo.UpdateRegisterInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +39,9 @@ public class RegisterInfoController {
     @Autowired
     private RegisterInfoServiceImpl registerInfoService;
 
+    @Autowired
+    private PropertiesList propertiesList;
+
 
     /**
      * 获取用户列表
@@ -61,9 +67,15 @@ public class RegisterInfoController {
         try {
             return registerInfoService.save(registerInfoPojo);
         } catch (Exception e) {
+            // 判断用户名是否重复
             e.printStackTrace();
-            // 打印e的信息可以获取是什么异常
-            throw new BusisnessException(20005, "添加用户名重复");
+            if (UtilsMethod.errType(e.getMessage(), propertiesList.getUqEmail())) {
+                throw new BusisnessException(20005, "邮箱重复");
+            } else if(UtilsMethod.errType(e.getMessage(), propertiesList.getUqUsername())) {
+                throw new BusisnessException(20005, "用户名重复");
+            } else {
+                throw new BusisnessException(20005, "插入数据库时发生未知错误");
+            }
         }
     }
 
@@ -71,16 +83,16 @@ public class RegisterInfoController {
     @PutMapping("/updateOne")
     @ApiOperation(value="修改用户", notes="register")
     @ResponseBody
-    public Boolean updateRegisterInfo(@RequestBody @Validated RegisterInfoVo registerInfoVo){
-        RegisterInfoPojo registerInfoPojo = new RegisterInfoPojo();
-        BeanUtils.copyProperties(registerInfoVo, registerInfoPojo);
-        try {
-            return registerInfoService.save(registerInfoPojo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 打印e的信息可以获取是什么异常
-            throw new BusisnessException(20005, "添加用户名重复");
-        }
+    public Boolean updateRegisterInfo(@RequestBody @Validated UpdateRegisterInfoVo updateRegisterInfoVo){
+        System.out.println(updateRegisterInfoVo);
+        return false;
+//        try {
+//            return registerInfoService.save(registerInfoPojo);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // 打印e的信息可以获取是什么异常
+//            throw new BusisnessException(20005, "添加用户名重复");
+//        }
     }
 
     /**
@@ -102,5 +114,21 @@ public class RegisterInfoController {
     @ResponseBody
     public void testError2() {
         System.out.println(9/0);
+    }
+
+    @PostMapping("/error3")
+    @ApiOperation(value="Assert异常测试", notes="register")
+    @ResponseBody
+    public Boolean testError3() {
+        Assert.notNull(null, "用户不存在");
+        return true;
+    }
+
+    @PostMapping("/testproperties")
+    @ApiOperation(value="Assert异常测试", notes="register")
+    @ResponseBody
+    public Boolean testproperties() {
+        System.out.println(propertiesList);
+        return true;
     }
 }
