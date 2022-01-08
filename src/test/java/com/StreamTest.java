@@ -27,6 +27,8 @@ public class StreamTest {
         // 向改变每一个list中元素的内容
         List<String> list1 = list.stream().map(i -> i + "a").collect(Collectors.toList());
 
+
+        
         System.out.println(list1);
     }
 }
