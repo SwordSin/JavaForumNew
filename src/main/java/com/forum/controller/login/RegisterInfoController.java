@@ -1,7 +1,8 @@
-package com.forum.controller;
+package com.forum.controller.login;
 
 import com.forum.entity.RegisterInfoPojo;
-import com.forum.service.impl.RegisterInfoServiceImpl;
+import com.forum.service.impl.login.RegisterInfoServiceImpl;
+import com.forum.vo.LoginVo;
 import com.forum.vo.RegisterInfoVo;
 import com.forum.vo.UpdateRegisterInfoVo;
 import io.swagger.annotations.Api;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -71,6 +75,16 @@ public class RegisterInfoController {
     @ResponseBody
     public Boolean deleteRegisterInfo(@PathVariable Integer id) {
         return registerInfoService.removeById(id);
+    }
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/login")
+    @ApiOperation(value="用户登录", notes="register")
+    @ResponseBody
+    public RegisterInfoPojo loginRegisterInfo(@RequestBody @Validated LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
+        return registerInfoService.loginRegisterInfo(loginVo, req ,resp);
     }
 
 }

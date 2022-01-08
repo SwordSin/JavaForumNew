@@ -1,9 +1,14 @@
-package com.forum.service;
+package com.forum.service.login;
 
 import com.forum.entity.RegisterInfoPojo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.forum.vo.LoginVo;
 import com.forum.vo.RegisterInfoVo;
 import com.forum.vo.UpdateRegisterInfoVo;
+import org.springframework.http.HttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -16,4 +21,5 @@ import com.forum.vo.UpdateRegisterInfoVo;
 public interface RegisterInfoService extends IService<RegisterInfoPojo> {
     Boolean updateRegisterInfo(UpdateRegisterInfoVo updateRegisterInfoVo);
     Boolean insertRegisterInfo(RegisterInfoVo registerInfoVo);
+    RegisterInfoPojo loginRegisterInfo(LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp);
 }

@@ -43,6 +43,14 @@ public class ErrorController {
         return true;
     }
 
+    @PostMapping("/interceptorTest/{test}")
+    @ApiOperation(value="拦截器测试", notes="register")
+    @ResponseBody
+    public Boolean interceptorTest(@PathVariable String test) {
+        System.out.println("响应数据.....");
+        return true;
+    }
+
 //    @PostMapping("/testproperties")
 //    @ApiOperation(value="Assert异常测试", notes="register")
 //    @ResponseBody

@@ -6,12 +6,12 @@ import com.forum.entity.RegisterInfoPojo;
 import com.forum.mapper.PostsInfoMapper;
 import com.forum.service.PostsInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.forum.service.impl.login.RegisterInfoServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -51,7 +51,6 @@ public class PostsInfoServiceImpl extends ServiceImpl<PostsInfoMapper, PostsInfo
         } catch (Exception e) {
             throw new RuntimeException("批量存储文章是发生异常");
         }
-
     }
 
     @Override
@@ -98,8 +97,10 @@ public class PostsInfoServiceImpl extends ServiceImpl<PostsInfoMapper, PostsInfo
                 list.add(postsInfoPojo);
             });
         }
+        // 关闭线程池
         threadPoolExecutor.shutdown();
         try {
+            // 等待线程池中的线程执行结束
             threadPoolExecutor.awaitTermination(Integer.MAX_VALUE,TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();

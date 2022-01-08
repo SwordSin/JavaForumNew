@@ -1,13 +1,15 @@
-package com.forum.service.impl;
+package com.forum.service.impl.login;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.forum.common.BusisnessException;
 import com.forum.common.PropertiesList;
 import com.forum.common.ResultCode;
 import com.forum.common.UtilsMethod;
 import com.forum.entity.RegisterInfoPojo;
 import com.forum.mapper.RegisterInfoMapper;
-import com.forum.service.RegisterInfoService;
+import com.forum.service.login.RegisterInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.forum.vo.LoginVo;
 import com.forum.vo.RegisterInfoVo;
 import com.forum.vo.UpdateRegisterInfoVo;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.beans.PropertyDescriptor;
 
 /**
@@ -89,5 +95,32 @@ public class RegisterInfoServiceImpl extends ServiceImpl<RegisterInfoMapper, Reg
             utilsMethod.errType(e.getMessage(), propertiesList.getUkEmail());
             throw new BusisnessException(ResultCode.UNKNOW_ERROR);
         }
+    }
+
+    @Override
+    public RegisterInfoPojo loginRegisterInfo(LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
+        QueryWrapper<RegisterInfoPojo> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", loginVo.getUsername()).eq("password", loginVo.getPassword());
+        RegisterInfoPojo registerInfoPojo = registerInfoService.getOne(wrapper);
+        System.out.println(registerInfoPojo);
+        if (registerInfoPojo != null) {
+            // 写入cookie
+            HttpSession httpSession = req.getSession();
+            httpSession.setAttribute("username", registerInfoPojo.getUsername());
+            httpSession.setAttribute("password", registerInfoPojo.getPassword());
+            // 查看是否是记住密码 记住密码,cookie保存30天, 不记住密码cookie保存2小时
+            int time = 3600 * 2;
+            // 记住密码功能
+            if (loginVo.getRememberMe() == true) {
+                time = 3600 * 24 * 30;
+            }
+            Cookie userPw = new Cookie("username" + registerInfoPojo.getUsername(), registerInfoPojo.getPassword());
+            userPw.setPath("/");
+            userPw.setMaxAge(time);
+            resp.addCookie(userPw);
+        } else {
+            throw new BusisnessException(ResultCode.LOGIN_ERROR);
+        }
+        return registerInfoPojo;
     }
 }

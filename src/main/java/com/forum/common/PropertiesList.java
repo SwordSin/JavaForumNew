@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ *  自定义配置文件的值
+ */
 public class PropertiesList {
     private String timeType;
     private String ukEmail;
