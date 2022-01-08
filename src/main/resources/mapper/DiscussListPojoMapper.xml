@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.mapper.DiscussListMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.forum.entity.DiscussListPojo">
+        <id column="id" property="id" />
+        <result column="dicuss_content" property="dicussContent" />
+        <result column="discuss_auth_id" property="discussAuthId" />
+        <result column="discuss_auth_name" property="discussAuthName" />
+        <result column="be_discuss_auth_id" property="beDiscussAuthId" />
+        <result column="be_discuss_auth_name" property="beDiscussAuthName" />
+        <result column="post_id" property="postId" />
+        <result column="board_id" property="boardId" />
+        <result column="discuss_type" property="discussType" />
+        <result column="param1" property="param1" />
+        <result column="param2" property="param2" />
+        <result column="param3" property="param3" />
+        <result column="param4" property="param4" />
+        <result column="param5" property="param5" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, dicuss_content, discuss_auth_id, discuss_auth_name, be_discuss_auth_id, be_discuss_auth_name, post_id, board_id, discuss_type, param1, param2, param3, param4, param5
+    </sql>
+
+</mapper>

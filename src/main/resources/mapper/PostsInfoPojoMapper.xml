@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.mapper.PostsInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.forum.entity.PostsInfoPojo">
+        <id column="id" property="id" />
+        <result column="board_id" property="boardId" />
+        <result column="posts_title" property="postsTitle" />
+        <result column="posts_content" property="postsContent" />
+        <result column="posts_auth_id" property="postsAuthId" />
+        <result column="posts_auth_name" property="postsAuthName" />
+        <result column="param1" property="param1" />
+        <result column="param2" property="param2" />
+        <result column="param3" property="param3" />
+        <result column="param4" property="param4" />
+        <result column="param5" property="param5" />
+        <result column="param6" property="param6" />
+        <result column="version" property="version" />
+        <result column="posts_file_path" property="postsFilePath" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="likes_num" property="likesNum" />
+        <result column="collect_num" property="collectNum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, board_id, posts_title, posts_content, posts_auth_id, posts_auth_name, param1, param2, param3, param4, param5, param6, version, posts_file_path, gmt_create, gmt_modified, likes_num, collect_num
+    </sql>
+
+</mapper>
