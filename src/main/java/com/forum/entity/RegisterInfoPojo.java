@@ -77,7 +77,7 @@ public class RegisterInfoPojo extends Model<RegisterInfoPojo> {
 
     @Override
     protected Serializable pkVal() {
-        return null;
+        return this.id;
     }
 
     @TableLogic

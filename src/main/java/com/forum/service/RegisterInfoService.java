@@ -2,6 +2,8 @@ package com.forum.service;
 
 import com.forum.entity.RegisterInfoPojo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.forum.vo.RegisterInfoVo;
+import com.forum.vo.UpdateRegisterInfoVo;
 
 /**
  * <p>
@@ -12,5 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-01-07
  */
 public interface RegisterInfoService extends IService<RegisterInfoPojo> {
-
+    Boolean updateRegisterInfo(UpdateRegisterInfoVo updateRegisterInfoVo);
+    Boolean insertRegisterInfo(RegisterInfoVo registerInfoVo);
 }

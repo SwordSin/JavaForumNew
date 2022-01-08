@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -39,9 +43,8 @@ public class RegisterInfoController {
     @Autowired
     private RegisterInfoServiceImpl registerInfoService;
 
-    @Autowired
-    private PropertiesList propertiesList;
-
+//    @Autowired
+//    private PropertiesList propertiesList;
 
     /**
      * 获取用户列表
@@ -60,39 +63,15 @@ public class RegisterInfoController {
     @ApiOperation(value="添加用户", notes="register")
     @ResponseBody
     public Boolean insertRegisterInfo(@RequestBody @Validated RegisterInfoVo registerInfoVo){
-//        System.out.println(registerInfoVo);
-//        return null;
-        RegisterInfoPojo registerInfoPojo = new RegisterInfoPojo();
-        BeanUtils.copyProperties(registerInfoVo, registerInfoPojo);
-        try {
-            return registerInfoService.save(registerInfoPojo);
-        } catch (Exception e) {
-            // 判断用户名是否重复
-            e.printStackTrace();
-            if (UtilsMethod.errType(e.getMessage(), propertiesList.getUqEmail())) {
-                throw new BusisnessException(20005, "邮箱重复");
-            } else if(UtilsMethod.errType(e.getMessage(), propertiesList.getUqUsername())) {
-                throw new BusisnessException(20005, "用户名重复");
-            } else {
-                throw new BusisnessException(20005, "插入数据库时发生未知错误");
-            }
-        }
+        return registerInfoService.insertRegisterInfo(registerInfoVo);
     }
 
     // 修改用户
     @PutMapping("/updateOne")
     @ApiOperation(value="修改用户", notes="register")
     @ResponseBody
-    public Boolean updateRegisterInfo(@RequestBody @Validated UpdateRegisterInfoVo updateRegisterInfoVo){
-        System.out.println(updateRegisterInfoVo);
-        return false;
-//        try {
-//            return registerInfoService.save(registerInfoPojo);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            // 打印e的信息可以获取是什么异常
-//            throw new BusisnessException(20005, "添加用户名重复");
-//        }
+    public Boolean updateRegisterInfo(@RequestBody @Validated UpdateRegisterInfoVo updateRegisterInfoVo) {
+        return registerInfoService.updateRegisterInfo(updateRegisterInfoVo);
     }
 
     /**
@@ -124,11 +103,11 @@ public class RegisterInfoController {
         return true;
     }
 
-    @PostMapping("/testproperties")
-    @ApiOperation(value="Assert异常测试", notes="register")
-    @ResponseBody
-    public Boolean testproperties() {
-        System.out.println(propertiesList);
-        return true;
-    }
+//    @PostMapping("/testproperties")
+//    @ApiOperation(value="Assert异常测试", notes="register")
+//    @ResponseBody
+//    public Boolean testproperties() {
+//        System.out.println(propertiesList);
+//        return true;
+//    }
 }

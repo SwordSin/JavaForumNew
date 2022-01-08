@@ -22,7 +22,6 @@ public class UpdateKeyValidator implements ConstraintValidator<UpdateKeys, Objec
         // 校验的实现逻辑
         BeanWrapperImpl wrapper = new BeanWrapperImpl(src);
         Object firstObj = wrapper.getPropertyValue(key);
-        System.out.println(firstObj);
-        return false;
+        return Arrays.binarySearch(keys, firstObj) != -1;
     }
 }
