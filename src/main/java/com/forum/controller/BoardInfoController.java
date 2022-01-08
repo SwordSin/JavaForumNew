@@ -1,10 +1,15 @@
 package com.forum.controller;
 
+import com.forum.common.BusisnessException;
+import com.forum.common.PropertiesList;
+import com.forum.common.ResultCode;
+import com.forum.common.UtilsMethod;
 import com.forum.entity.BoardInfoPojo;
 import com.forum.service.impl.BoardInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +37,11 @@ public class BoardInfoController {
 
     @Autowired
     private BoardInfoServiceImpl boardInfoService;
+    @Autowired
+    private PropertiesList propertiesList;
+
+    @Autowired
+    private UtilsMethod utilsMethod;
 
     /**
      * 获取论坛板块列表
@@ -51,7 +61,13 @@ public class BoardInfoController {
     @ResponseBody
     public Boolean insertBoardInfo(@RequestParam String boardName){
         BoardInfoPojo boardInfoPojo = new BoardInfoPojo().setBoardName(boardName);
-        return boardInfoService.save(boardInfoPojo);
+        try {
+            return boardInfoService.save(boardInfoPojo);
+        }  catch (Exception e) {
+            e.printStackTrace();
+            utilsMethod.errType(e.getMessage(), propertiesList.getUkBoardName());
+            throw new BusisnessException(ResultCode.UNKNOW_ERROR);
+        }
     }
 
     /*
@@ -62,10 +78,17 @@ public class BoardInfoController {
     @ApiOperation(value="修改板块",notes="id, 板块名称")
     @ResponseBody
     public Boolean updateBoardInfo(@PathVariable("id") Long id, @PathVariable("boardName") String boardName){
-        BoardInfoPojo boardInfoPojo  = new BoardInfoPojo();
-        boardInfoPojo.setBoardName(boardName);
-        boardInfoPojo.setId(id);
-        return boardInfoService.updateById(boardInfoPojo);
+        BoardInfoPojo boardInfoPojo  = new BoardInfoPojo().setBoardName(boardName).setId(id);
+        // 校验是否能找到修改的板块
+        BoardInfoPojo isNull = boardInfoPojo.selectById();
+        Assert.notNull(isNull, "找不到要修改的板块, 尝试刷新页面重新操作");
+        try {
+            return boardInfoService.updateById(boardInfoPojo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            utilsMethod.errType(e.getMessage(), propertiesList.getUkBoardName());
+            throw new BusisnessException(ResultCode.UNKNOW_ERROR);
+        }
     }
 
     /*
@@ -75,7 +98,12 @@ public class BoardInfoController {
     @ApiOperation(value="删除板块",notes="板块id")
     @ResponseBody
     public Boolean deleteBoardInfo(@PathVariable("id") Long id){
-        return boardInfoService.removeById(id);
+        Boolean isDelete = false;
+        if ((isDelete = boardInfoService.removeById(id)) == true) {
+            return isDelete;
+        } else {
+            throw  new RuntimeException("删除失败, 尝试刷新页面重新操作");
+        }
     }
 
 }

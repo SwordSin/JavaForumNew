@@ -1,18 +1,12 @@
 package com.forum.controller;
 
-import com.forum.common.BusisnessException;
-import com.forum.common.PropertiesList;
-import com.forum.common.UtilsMethod;
 import com.forum.entity.RegisterInfoPojo;
 import com.forum.service.impl.RegisterInfoServiceImpl;
 import com.forum.vo.RegisterInfoVo;
 import com.forum.vo.UpdateRegisterInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -42,9 +32,6 @@ import java.util.List;
 public class RegisterInfoController {
     @Autowired
     private RegisterInfoServiceImpl registerInfoService;
-
-//    @Autowired
-//    private PropertiesList propertiesList;
 
     /**
      * 获取用户列表
@@ -66,7 +53,9 @@ public class RegisterInfoController {
         return registerInfoService.insertRegisterInfo(registerInfoVo);
     }
 
-    // 修改用户
+    /**
+     * 修改用户信息
+     */
     @PutMapping("/updateOne")
     @ApiOperation(value="修改用户", notes="register")
     @ResponseBody
@@ -75,39 +64,13 @@ public class RegisterInfoController {
     }
 
     /**
-     * 测试异常
+     * 删除用户信息
      */
-    @PostMapping("/error1/{type}")
-    @ApiOperation(value="测试异常", notes="register")
+    @PutMapping("/deleteOne")
+    @ApiOperation(value="删除用户", notes="register")
     @ResponseBody
-    public String testError(@PathVariable String type) {
-        System.out.println(9/0);
-        if (type.equals("success")) {
-            return "拿到了成功数据";
-        } else {
-            throw  new BusisnessException(20004, "异常数据");
-        }
-    }
-    @PostMapping("/error2")
-    @ApiOperation(value="测试异常2", notes="register")
-    @ResponseBody
-    public void testError2() {
-        System.out.println(9/0);
+    public Boolean deleteRegisterInfo(@PathVariable Integer id) {
+        return registerInfoService.removeById(id);
     }
 
-    @PostMapping("/error3")
-    @ApiOperation(value="Assert异常测试", notes="register")
-    @ResponseBody
-    public Boolean testError3() {
-        Assert.notNull(null, "用户不存在");
-        return true;
-    }
-
-//    @PostMapping("/testproperties")
-//    @ApiOperation(value="Assert异常测试", notes="register")
-//    @ResponseBody
-//    public Boolean testproperties() {
-//        System.out.println(propertiesList);
-//        return true;
-//    }
 }

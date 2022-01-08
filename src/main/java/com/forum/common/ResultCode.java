@@ -8,7 +8,8 @@ public enum ResultCode {
     // 业务异常
     PARAM_IS_INVALID(20001, "参数无效"),
     USER_HAS_EXISTED(20002,"用户名已存在"),
-    USER_NOT_FIND(20003,"用户名不存在");
+    USER_NOT_FIND(20003,"用户名不存在"),
+    UNKNOW_ERROR(20005,"发生未知错误, 请刷新页面重新操作");
 
     private Integer code;
     private String msg;

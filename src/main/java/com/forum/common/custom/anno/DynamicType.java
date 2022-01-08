@@ -11,19 +11,19 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 // 定义注解的实现类
-@Constraint(validatedBy = UpdateKeyValidator.class)
+@Constraint(validatedBy = DynameicTypeValidator.class)
 @Documented
-// 更新用户名可以取值的范围
-public @interface UpdateKeys {
-    String message() default "请修改正确的字段: {key}";
+public @interface DynamicType {
+    String message() default "修改的格式不正确";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    // 允许被修改的字段范围
-    String[] updateKey();
-
-    // 需要被修改的字段
+    // 需要验证的第一值
     String key();
+
+    // 需要验证的第二个值
+    String value();
+
 }

@@ -2,6 +2,7 @@ package com.forum.service.impl;
 
 import com.forum.common.BusisnessException;
 import com.forum.common.PropertiesList;
+import com.forum.common.ResultCode;
 import com.forum.common.UtilsMethod;
 import com.forum.entity.RegisterInfoPojo;
 import com.forum.mapper.RegisterInfoMapper;
@@ -28,10 +29,10 @@ import java.beans.PropertyDescriptor;
 public class RegisterInfoServiceImpl extends ServiceImpl<RegisterInfoMapper, RegisterInfoPojo> implements RegisterInfoService {
     @Autowired
     private RegisterInfoServiceImpl registerInfoService;
-
     @Autowired
     private PropertiesList propertiesList;
-
+    @Autowired
+    private UtilsMethod utilsMethod;
 
     /**
      * 更新用户
@@ -50,7 +51,7 @@ public class RegisterInfoServiceImpl extends ServiceImpl<RegisterInfoMapper, Reg
             registerInfoPojo.setId(updateRegisterInfoVo.getId());
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("发生未知异常");
+            throw new BusisnessException(ResultCode.UNKNOW_ERROR);
         }
         // 判断被修改的用户是否存在
         RegisterInfoPojo isRegisterInfoPojo = registerInfoPojo.selectById();
@@ -61,8 +62,8 @@ public class RegisterInfoServiceImpl extends ServiceImpl<RegisterInfoMapper, Reg
             return registerInfoService.updateById(registerInfoPojo);
         } catch (Exception e) {
             e.printStackTrace();
-            UtilsMethod.errType(e.getMessage(), propertiesList.getUqEmail());
-            throw new BusisnessException(20005, "发生位置错误");
+            utilsMethod.errType(e.getMessage(), propertiesList.getUkEmail());
+            throw new BusisnessException(ResultCode.UNKNOW_ERROR);
         }
     }
 
@@ -78,12 +79,15 @@ public class RegisterInfoServiceImpl extends ServiceImpl<RegisterInfoMapper, Reg
         RegisterInfoPojo registerInfoPojo = new RegisterInfoPojo();
         BeanUtils.copyProperties(registerInfoVo, registerInfoPojo);
         try {
-            return registerInfoService.save(registerInfoPojo);
+            boolean isInsert = registerInfoService.save(registerInfoPojo);
+            System.out.println("打印id--------------------------");
+            System.out.println(registerInfoPojo.getId());
+            return isInsert;
         } catch (Exception e) {
             // 判断用户名是否重复
             e.printStackTrace();
-            UtilsMethod.errType(e.getMessage(), propertiesList.getUqEmail());
-            throw new BusisnessException(20005, "发生位置错误");
+            utilsMethod.errType(e.getMessage(), propertiesList.getUkEmail());
+            throw new BusisnessException(ResultCode.UNKNOW_ERROR);
         }
     }
 }

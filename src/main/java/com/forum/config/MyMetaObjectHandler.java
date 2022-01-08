@@ -17,6 +17,11 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
             setFieldValByName("gmtCreate", LocalDateTime.now(), metaObject);
             setFieldValByName("gmtModified", LocalDateTime.now(), metaObject);
         }
+        // 判断如果是点赞或收藏字段
+        if (metaObject.hasGetter("likesNum") || metaObject.hasGetter("collectNum")) {
+            setFieldValByName("likesNum", 0, metaObject);
+            setFieldValByName("collectNum", 0, metaObject);
+        }
     }
 
     @Override

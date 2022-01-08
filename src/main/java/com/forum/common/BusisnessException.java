@@ -16,4 +16,6 @@ public class BusisnessException extends RuntimeException{
         this.code = code;
         this.message = msg;
     }
+
+
 }

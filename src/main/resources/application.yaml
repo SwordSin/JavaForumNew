@@ -12,7 +12,8 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${mysqlIp}:3306/forum_db2?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    # rewriteBatchedStatements=true # 加上这个参数以后, saveBatch的速度会提高几个数量级
+    url: jdbc:mysql://${mysqlIp}:3306/forum_db2?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
     username: root
     password: P!XcewfKwd85Xy0vXo+bbBFqerL3i&SWf~_0KL
     initial-size: 3

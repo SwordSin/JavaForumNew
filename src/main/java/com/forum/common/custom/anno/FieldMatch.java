@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = FieldMatchValidator.class)
 @Documented
 public @interface FieldMatch {
-    String message() default "两次输入密码不一致";
+    String message() default "两次输入的密码不同";
 
     Class<?>[] groups() default {};
 

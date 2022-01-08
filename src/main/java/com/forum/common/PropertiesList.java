@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class PropertiesList {
     private String timeType;
-    private String uqEmail;
-    private String uqUsername;
+    private String ukEmail;
+    private String ukUsername;
+    private String ukBoardName;
 }

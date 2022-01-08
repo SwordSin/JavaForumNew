@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@FieldMatch(first = "password", second = "againPassword", message = "输入的两次密码必须相同")
+@FieldMatch(first = "password", second = "againPassword")
 @Data
 public class RegisterInfoVo {
 
@@ -25,6 +25,7 @@ public class RegisterInfoVo {
     private String againPassword;
 
     @NotBlank(message = "昵称不能为空")
+    @Size(min = 2, max = 20, message = "昵称必须大于等于2位且小与20位")
     private String netName;
 //    private String headImg;
 //    private String

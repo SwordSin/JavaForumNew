@@ -2,6 +2,9 @@ package com.forum.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -35,7 +38,7 @@ public class PostsInfoPojo extends Model<PostsInfoPojo> {
     private Long id;
 
     @ApiModelProperty(value = "所属板块id")
-    private Integer boardId;
+    private Long boardId;
 
     @ApiModelProperty(value = "帖子标题")
     private String postsTitle;
@@ -44,7 +47,7 @@ public class PostsInfoPojo extends Model<PostsInfoPojo> {
     private String postsContent;
 
     @ApiModelProperty(value = "帖子作者名字id如果为0表示匿名")
-    private Integer postsAuthId;
+    private Long postsAuthId;
 
     @ApiModelProperty(value = "帖子作者名字")
     private String postsAuthName;
@@ -68,17 +71,24 @@ public class PostsInfoPojo extends Model<PostsInfoPojo> {
     private String postsFilePath;
 
     @ApiModelProperty(value = "帖子创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @ApiModelProperty(value = "帖子修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
     @ApiModelProperty(value = "点赞数量")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer likesNum;
 
     @ApiModelProperty(value = "收藏字段")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer collectNum;
 
+    @ApiModelProperty(value = "逻辑删除")
+    @TableLogic
+    private Integer deleted;
 
     @Override
     protected Serializable pkVal() {
